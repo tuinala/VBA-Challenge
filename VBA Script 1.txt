@@ -1,0 +1,71 @@
+Module 2 Assignment VBA Challenge Sub Stock_Analysis()
+
+For Each ws In Worksheets
+
+'Set column headers'
+    ws.Range("I1").Value = "Ticker"
+    ws.Range("J1").Value = "Yearly Change"
+    ws.Range("K1").Value = "Percent Change"
+    ws.Range("L1").Value = "Total Stock Volume"
+    ws.Range("P1").Value = "Ticker"
+    ws.Range("Q1").Value = "Value"
+    ws.Range("O2").Value = "Greatest % Increase"
+    ws.Range("O3").Value = "Greatest % Decrease"
+    ws.Range("O4").Value = "Greatest Total Volume"
+
+'Set variables
+    Dim Ticker_Name As String
+    Dim Stock_Open As Double
+        Stock_Open = 0
+    Dim Stock_Close As Double
+        Stock_Close = 0
+    Dim Ticker_TotalVolume As Double
+        Ticker_TotalVolume = 0
+    Dim Yearly_Change As Double
+        Yearly_Change = 0
+    Dim Percent_Change As Double
+        Percent_Change = 0
+    Dim Greatest_Increase As String
+    Dim Greatest_Increase_Percent As Double
+        Greatest_Increase_Percent = 0
+    Dim Greatest_Decrease As String
+    Dim Greatest_Decrease_Percent As Double
+        Greatest_Decrease_Percent = 0
+    Dim Greatest_Volume As String
+    Dim Greatest_Volume_Total As Double
+        Greatest_Volume_Total = 0
+    Dim Lastrow As Long
+    Dim Summary_TableRow As Double
+        Summary_TableRow = 2
+                   
+'Set stock open value'
+    Stock_Open = ws.Cells(2, 3).Value
+    
+'Set last row of worksheet
+    Lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+'Loop through the worksheets
+    For i = 2 To Lastrow
+
+If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+'Set the starting point for ticker name
+    Ticker_Name = ws.Cells(i, 1).Value
+
+'Add ticker total volume
+    Ticker_TotalVolume = Ticker_TotalVolume + ws.Cells(i, 7).Value
+
+'Calculate stock change and percent
+    Stock_Close = ws.Cells(i, 6).Value
+    Yearly_Change = Stock_Close - Stock_Open
+       
+If Stock_Open = 0 Then
+    
+    Yearly_Change = 0
+    
+    Percent_Change = 0
+
+        Else
+    
+            Percent_Change = Yearly_Change / Stock_Open
+End If

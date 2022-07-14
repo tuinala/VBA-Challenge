@@ -1,0 +1,76 @@
+'Assign Summary Table headings
+    ws.Range("I" & Summary_TableRow).Value = Ticker_Name
+    ws.Range("J" & Summary_TableRow).Value = Yearly_Change
+    ws.Range("K" & Summary_TableRow).Value = Percent_Change
+    ws.Range("K" & Summary_TableRow).NumberFormat = "0.00%"
+    ws.Range("L" & Summary_TableRow).Value = Ticker_TotalVolume
+
+'Assign positive and neqative conditional formatting to column
+
+If (Yearly_Change >= 0) Then
+
+    ws.Range("J" & Summary_TableRow).Interior.ColorIndex = 4
+        
+        Else
+        
+            ws.Range("J" & Summary_TableRow).Interior.ColorIndex = 3
+End If
+
+'Set Summary Table for next stock open value
+    Summary_TableRow = Summary_TableRow + 1
+    Stock_Open = ws.Cells(i + 1, 3).Value
+
+'Set and calculate greatest values
+
+If (Percent_Change > Greatest_Increase_Percent) Then
+
+    Greatest_Increase_Percent = Percent_Change
+    
+    Greatest_Increase = Ticker_Name
+ElseIf (Percent_Change < Greatest_Decrease_Percent) Then
+
+    Greatest_Decrease_Percent = Percent_Change
+    
+    Greatest_Decrease = Ticker_Name
+End If
+
+If (Ticker_TotalVolume > Greatest_Volume_Total) Then
+
+    Greatest_Volume_Total = Ticker_TotalVolume
+    
+    Greatest_Volume = Ticker_Name
+End If
+
+'Trigger Reset values
+    Percent_Change = 0
+    Ticker_TotalVolume = 0
+
+
+'Get the next ticker total volume
+Else: Ticker_TotalVolume = Ticker_TotalVolume + ws.Cells(i, 7).Value
+
+End If
+
+Next i
+
+'Assign values to corresponding cells
+    ws.Range("P2").Value = Greatest_Increase
+    ws.Range("Q2").Value = Greatest_Increase_Percent
+    ws.Range("P3").Value = Greatest_Decrease
+    ws.Range("Q3").Value = Greatest_Decrease_Percent
+    ws.Range("P4").Value = Greatest_Volume
+    ws.Range("Q4").Value = Greatest_Volume_Total
+
+'Assign number format
+    ws.Range("Q2").NumberFormat = "0.00%"
+    ws.Range("Q3").NumberFormat = "0.00%"
+
+'Adjust columns
+    ws.Columns("I:Q").AutoFit
+    
+'Assign conditional formatting to cells
+    
+
+Next ws
+
+End Sub
